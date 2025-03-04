@@ -1,0 +1,217 @@
+1. Verifique se a chave está correta 🔑
+Certifique-se de que está usando a chave exatamente como foi gerada. Para confirmar:
+
+Acesse TMDb Account Settings
+Confira se a chave da API (API Key v3) está correta.
+Se necessário, gere uma nova chave e tente novamente.
+
+2. Verifique o formato correto da URL 🌍
+O TMDb usa esta estrutura para requisições:
+
+Exemplo de requisição correta (GET popular movies)
+bash
+Copiar
+Editar
+https://api.themoviedb.org/3/movie/popular?api_key=SUA_CHAVE_AQUI&language=pt-BR
+Se estiver chamando a API via código Python, tente algo assim:
+
+python
+Copiar
+Editar
+import requests
+
+api_key = "SUA_CHAVE_AQUI"
+url = f"https://api.themoviedb.org/3/movie/popular?api_key={api_key}&language=pt-BR"
+
+response = requests.get(url)
+print(response.json())  # Exibir resposta para verificar se está correta
+3. Use o cabeçalho correto para API Key v4 (Bearer Token)
+Se estiver usando API Key v4, utilize o cabeçalho correto:
+
+python
+Copiar
+Editar
+headers = {
+    "Authorization": "Bearer SEU_TOKEN_DE_ACESSO_V4",
+    "Content-Type": "application/json;charset=utf-8"
+}
+
+url = "https://api.themoviedb.org/3/movie/popular?language=pt-BR"
+response = requests.get(url, headers=headers)
+print(response.json())
+4. Verifique se a API Key foi ativada ⏳
+Depois de criar a chave, pode levar alguns minutos para ser ativada no TMDb.
+
+5. Teste sua API Key no navegador 🖥️
+Abra seu navegador e acesse:
+
+bash
+Copiar
+Editar
+https://api.themoviedb.org/3/movie/popular?api_key=SUA_CHAVE_AQUI&language=pt-BR
+Se funcionar, o problema pode estar no seu código.
+Se der erro, sua chave pode estar errada ou inativa.
+6. Verifique se sua conta está configurada corretamente 👤
+Algumas chaves requerem permissões específicas.
+Se sua conta for nova, tente aceitar os termos de uso da API no TMDb.
+Caso nenhuma dessas soluções funcione, me avise que podemos depurar juntos! 🚀🎬
+
+Você disse:
+Agora quero listar todos os filmes 
+https://api.themoviedb.org/3/movie/551?api_key=320d71c7bc6e6485b016638cc8a5b1ab
+O ChatGPT disse:
+Para listar todos os filmes no TMDb, você pode usar a rota correta da API.
+
+1️⃣ Endpoint correto para listar filmes populares:
+A URL abaixo retorna uma lista de filmes populares:
+
+bash
+Copiar
+Editar
+https://api.themoviedb.org/3/movie/popular?api_key=320d71c7bc6e6485b016638cc8a5b1ab&language=pt-BR&page=1
+2️⃣ Exemplo em Python para listar os filmes
+python
+Copiar
+Editar
+import requests
+
+api_key = "320d71c7bc6e6485b016638cc8a5b1ab"
+url = f"https://api.themoviedb.org/3/movie/popular?api_key={api_key}&language=pt-BR&page=1"
+
+response = requests.get(url)
+
+if response.status_code == 200:
+    data = response.json()
+    filmes = data.get("results", [])  # Pega a lista de filmes
+
+    for filme in filmes:
+        print(f"📽️ {filme['title']} ({filme['release_date']}) - Nota: {filme['vote_average']}")
+else:
+    print("Erro ao buscar filmes:", response.json())
+3️⃣ Outras Listas Disponíveis
+Você pode trocar o popular por outros endpoints para obter listas diferentes:
+
+Tipo de Filme	Endpoint
+Filmes Populares	/movie/popular
+Filmes Em Cartaz	/movie/now_playing
+Filmes Bem Avaliados	/movie/top_rated
+Próximos Lançamentos	/movie/upcoming
+Exemplo para filmes bem avaliados:
+
+bash
+Copiar
+Editar
+https://api.themoviedb.org/3/movie/top_rated?api_key=320d71c7bc6e6485b016638cc8a5b1ab&language=pt-BR&page=1
+4️⃣ O Que Fazer Com a Resposta?
+Se quiser salvar a resposta JSON em um arquivo para analisar depois, use:
+
+python
+Copiar
+Editar
+import json
+
+with open("filmes.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=4, ensure_ascii=False)
+Agora você pode explorar os dados com mais facilidade. 🚀🎬
+Me avise se precisar de mais alguma coisa! 😊
+
+Você disse:
+me de todos os endpoints possiveis
+O ChatGPT disse:
+O TMDb possui vários endpoints para acessar diferentes tipos de dados sobre filmes, séries e pessoas. Aqui está uma lista completa dos principais endpoints da API TMDb organizados por categoria.
+
+🎬 Filmes (/movie)
+Descrição	Endpoint
+Detalhes de um filme	/movie/{movie_id}
+Filmes populares	/movie/popular
+Filmes em cartaz	/movie/now_playing
+Filmes mais bem avaliados	/movie/top_rated
+Próximos lançamentos	/movie/upcoming
+Créditos (elenco e equipe)	/movie/{movie_id}/credits
+Imagens do filme	/movie/{movie_id}/images
+Vídeos do filme (trailers, teasers, etc.)	/movie/{movie_id}/videos
+Recomendações de filmes	/movie/{movie_id}/recommendations
+Filmes similares	/movie/{movie_id}/similar
+Palavras-chave do filme	/movie/{movie_id}/keywords
+Listas que contêm o filme	/movie/{movie_id}/lists
+Traduções disponíveis do filme	/movie/{movie_id}/translations
+Avaliações do filme	/movie/{movie_id}/reviews
+📺 Séries (TV Shows) (/tv)
+Descrição	Endpoint
+Detalhes de uma série	/tv/{tv_id}
+Séries populares	/tv/popular
+Séries no ar agora	/tv/on_the_air
+Séries mais bem avaliadas	/tv/top_rated
+Séries que estreiam em breve	/tv/airing_today
+Créditos (elenco e equipe)	/tv/{tv_id}/credits
+Imagens da série	/tv/{tv_id}/images
+Vídeos da série (trailers, teasers, etc.)	/tv/{tv_id}/videos
+Recomendações de séries	/tv/{tv_id}/recommendations
+Séries similares	/tv/{tv_id}/similar
+Temporadas de uma série	/tv/{tv_id}/season/{season_number}
+Episódios de uma temporada	/tv/{tv_id}/season/{season_number}/episode/{episode_number}
+🎭 Pessoas (Atores, Diretores, etc.) (/person)
+Descrição	Endpoint
+Detalhes de uma pessoa (ator, diretor, etc.)	/person/{person_id}
+Trabalhos conhecidos	/person/{person_id}/movie_credits
+Trabalhos em TV	/person/{person_id}/tv_credits
+Imagens de uma pessoa	/person/{person_id}/images
+Melhores pessoas do momento	/person/popular
+🎞️ Gêneros (/genre)
+Descrição	Endpoint
+Lista de gêneros de filmes	/genre/movie/list
+Lista de gêneros de séries	/genre/tv/list
+🔎 Pesquisa (/search)
+Descrição	Endpoint
+Pesquisar por filmes	/search/movie
+Pesquisar por séries	/search/tv
+Pesquisar por pessoas	/search/person
+Pesquisar por empresas (estúdios, distribuidoras, etc.)	/search/company
+Pesquisar por coleções de filmes	/search/collection
+Pesquisar por palavras-chave	/search/keyword
+🌍 Descobrir (Discover) (/discover)
+Descrição	Endpoint
+Descobrir filmes por filtros (gênero, ano, nota, etc.)	/discover/movie
+Descobrir séries por filtros (gênero, ano, nota, etc.)	/discover/tv
+Exemplo de uso do Discover Movies para obter os filmes de ação mais bem avaliados:
+
+bash
+Copiar
+Editar
+https://api.themoviedb.org/3/discover/movie?api_key=SUA_CHAVE&with_genres=28&sort_by=vote_average.desc
+🏆 Tendências (Trending) (/trending)
+Descrição	Endpoint
+Filmes em alta	/trending/movie/{time_window}
+Séries em alta	/trending/tv/{time_window}
+Pessoas em alta	/trending/person/{time_window}
+{time_window} pode ser day (últimas 24h) ou week (última semana).
+
+🏷 Palavras-chave (Keywords) (/keyword)
+Descrição	Endpoint
+Detalhes de uma palavra-chave	/keyword/{keyword_id}
+Filmes associados a uma palavra-chave	/keyword/{keyword_id}/movies
+🏢 Empresas (Estúdios, Distribuidoras, etc.) (/company)
+Descrição	Endpoint
+Detalhes de uma empresa	/company/{company_id}
+Filmes produzidos por uma empresa	/company/{company_id}/movies
+🗂 Coleções de Filmes (/collection)
+Descrição	Endpoint
+Detalhes de uma coleção	/collection/{collection_id}
+Imagens de uma coleção	/collection/{collection_id}/images
+🌍 Idiomas Disponíveis (/configuration/languages)
+Descrição	Endpoint
+Lista de idiomas suportados	/configuration/languages
+📌 Como usar esses endpoints?
+Para fazer uma requisição, basta usar a URL base:
+
+ruby
+Copiar
+Editar
+https://api.themoviedb.org/3/{endpoint}?api_key=SUA_CHAVE_AQUI
+🔹 Exemplo:
+Obter os filmes mais bem avaliados em português:
+
+bash
+Copiar
+Editar
+https://api.themoviedb.org/3/movie/top_rated?api_key=SUA_CHAVE_AQUI&language=pt-BR
